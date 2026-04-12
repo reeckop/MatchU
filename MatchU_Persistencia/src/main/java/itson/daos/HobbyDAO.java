@@ -35,7 +35,7 @@ public class HobbyDAO implements IHobbyDAO {
         try {
             return em.createQuery(
                 "SELECT h FROM Hobby h ORDER BY h.categoria, h.nombre", Hobby.class
-            ).setMaxResults(100) // Límite de 100 registros requerido por la rúbrica
+            ).setMaxResults(100)
              .getResultList();
         } finally {
             em.close();

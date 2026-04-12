@@ -55,7 +55,9 @@ public class MatchDAO implements IMatchDAO{
                 "  m.estudiante1.idEstudiante = :id OR m.estudiante2.idEstudiante = :id) " +
                 "ORDER BY m.fechaMatch DESC",
                 Match.class
-            ).setParameter("id", idEstudiante).getResultList();
+            ).setParameter("id", idEstudiante)
+             .setMaxResults(100)
+             .getResultList();
         } finally {
             em.close();
         }

@@ -94,7 +94,6 @@ public class EstudianteDAO implements IEstudianteDAO{
         }
     }
     
-    
     @Override
     public boolean existeCorreo(String correo) {
         EntityManager em = JPAUtil.getEntityManager();

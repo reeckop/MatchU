@@ -1,6 +1,5 @@
 package itson.daos;
 
-
 import itson.interfaces.IInteraccionDAO;
 import itson.matchu_dominio.models.Interaccion;
 import itson.matchu_dominio.models.Interaccion.TipoInteraccion;
