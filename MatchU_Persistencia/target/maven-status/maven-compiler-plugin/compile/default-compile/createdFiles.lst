@@ -1,0 +1,11 @@
+itson\interfaces\IHobbyDAO.class
+itson\interfaces\IMatchDAO.class
+itson\daos\EstudianteDAO.class
+itson\interfaces\IMensajeDAO.class
+itson\daos\HobbyDAO.class
+itson\interfaces\IInteraccionDAO.class
+itson\daos\MensajeDAO.class
+itson\daos\InteraccionDAO.class
+itson\daos\MatchDAO.class
+itson\interfaces\IEstudianteDAO.class
+itson\matchu_persistencia\MatchU_Persistencia.class
