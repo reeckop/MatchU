@@ -16,7 +16,6 @@ public class EstudianteService {
     }
 
     public Estudiante registrarEstudiante(Estudiante estudiante) throws Exception {
-        // Validar campos obligatorios
         if (estudiante.getNombre() == null || estudiante.getNombre().trim().isEmpty()) {
             throw new Exception("El nombre es obligatorio.");
         }
@@ -24,7 +23,6 @@ public class EstudianteService {
             throw new Exception("El correo es obligatorio.");
         }
         
-        // No duplicar datos (Regla de negocio)
         if (estudianteDAO.existeCorreo(estudiante.getCorreo())) {
             throw new Exception("El correo ingresado ya está registrado.");
         }

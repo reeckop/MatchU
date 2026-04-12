@@ -37,7 +37,9 @@ public class MensajeDAO implements IMensajeDAO{
                 "SELECT m FROM Mensaje m WHERE m.match.idMatch = :idMatch " +
                 "ORDER BY m.fechaEnvio ASC",
                 Mensaje.class
-            ).setParameter("idMatch", idMatch).getResultList();
+            ).setParameter("idMatch", idMatch)
+             .setMaxResults(100)
+             .getResultList();
         } finally {
             em.close();
         }

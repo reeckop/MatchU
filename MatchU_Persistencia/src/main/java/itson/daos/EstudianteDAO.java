@@ -1,6 +1,5 @@
 package itson.daos;
 
-
 import itson.interfaces.IEstudianteDAO;
 import itson.matchu_dominio.models.Estudiante;
 import itson.matchu_utilerias.JPAUtil;
@@ -67,7 +66,9 @@ public class EstudianteDAO implements IEstudianteDAO{
                 "SELECT e FROM Estudiante e " +
                 "WHERE e.idEstudiante <> :id AND e.activo = true ORDER BY e.nombre",
                 Estudiante.class
-            ).setParameter("id", idExcluido).getResultList();
+            ).setParameter("id", idExcluido)
+             .setMaxResults(100)
+             .getResultList();
         } finally {
             em.close();
         }
@@ -85,7 +86,9 @@ public class EstudianteDAO implements IEstudianteDAO{
                 "      WHERE i.emisor.idEstudiante = :idEmisor) " +
                 "ORDER BY e.nombre",
                 Estudiante.class
-            ).setParameter("idEmisor", idEmisor).getResultList();
+            ).setParameter("idEmisor", idEmisor)
+             .setMaxResults(100)
+             .getResultList();
         } finally {
             em.close();
         }

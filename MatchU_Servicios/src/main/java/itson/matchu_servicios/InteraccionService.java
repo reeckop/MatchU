@@ -36,18 +36,14 @@ public class InteraccionService {
             throw new Exception("Uno de los estudiantes no existe.");
         }
 
-        // Verificar si ya existe la interacción para no duplicar datos
         if (interaccionDAO.buscar(idEmisor, idReceptor).isPresent()) {
             throw new Exception("Ya has interactuado con este perfil.");
         }
 
-        // 1. Guardar el "Me Gusta"
         Interaccion interaccion = new Interaccion(emisorOpt.get(), receptorOpt.get(), Interaccion.TipoInteraccion.LIKE);
         interaccionDAO.guardar(interaccion);
 
-        // 2. LÓGICA DE MATCH: Verificar si el receptor ya le había dado "Me Gusta" al emisor
         if (interaccionDAO.dioCLikeA(idReceptor, idEmisor)) {
-            // ¡Es un Match!
             Match nuevoMatch = new Match(emisorOpt.get(), receptorOpt.get());
             matchDAO.guardar(nuevoMatch);
             System.out.println("¡MATCH CREADO entre " + emisorOpt.get().getNombre() + " y " + receptorOpt.get().getNombre() + "!");
