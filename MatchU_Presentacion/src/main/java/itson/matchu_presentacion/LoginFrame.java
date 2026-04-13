@@ -42,6 +42,13 @@ public class LoginFrame extends JFrame {
         add(new JLabel("BIENVENIDO A MATCHU", SwingConstants.CENTER));
         add(panelDatos);
         add(btnIngresar);
+        
+        JButton btnRegistro = new JButton("¿No tienes cuenta? Regístrate");
+        btnRegistro.addActionListener(e -> {
+        new RegistroFrame().setVisible(true);
+        this.dispose();
+        });
+        add(btnRegistro);
     }
 
     private void realizarLogin() {
@@ -52,8 +59,9 @@ public class LoginFrame extends JFrame {
             Estudiante usuarioLogueado = estudianteService.login(correo, password);
             JOptionPane.showMessageDialog(this, "¡Bienvenido, " + usuarioLogueado.getNombre() + "!");
             
-            //new MainFrame(usuarioLogueado).setVisible(true);
-            //this.dispose();
+            
+            new MainFrame(usuarioLogueado).setVisible(true);
+            this.dispose();
             
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(this, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);

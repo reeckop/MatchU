@@ -1,71 +1,90 @@
 package itson.matchu_servicios;
 
 import itson.daos.EstudianteDAO;
-import itson.daos.MatchDAO;
+import itson.interfacesBO.IEstudianteService;
 import itson.matchu_dominio.models.Estudiante;
-import itson.matchu_dominio.models.Match;
-import java.util.List;
 import java.util.Optional;
+import org.mindrot.jbcrypt.BCrypt;
 
 /**
  *
  * @author Ricardo
  */
-public class EstudianteService {
+public class EstudianteService implements IEstudianteService{
     
     private final EstudianteDAO estudianteDAO;
-    private final MatchDAO matchDAO;
 
     public EstudianteService() {
         this.estudianteDAO = new EstudianteDAO();
-        this.matchDAO = new MatchDAO();
     }
   
+    @Override
     public Estudiante login(String correo, String contrasena) throws Exception {
         Optional<Estudiante> estudianteOpt = estudianteDAO.buscarPorCorreo(correo);
-
+        
+        Estudiante estudiante = estudianteOpt.get();
+        
         if (estudianteOpt.isEmpty()) {
             throw new Exception("El correo electrónico no está registrado.");
         }
 
-        Estudiante estudiante = estudianteOpt.get();
-
-        if (!estudiante.getContrasena().equals(contrasena)) {
-            throw new Exception("Contraseña incorrecta.");
+        if ( estudiante == null || estudiante.getCorreo().trim().isEmpty()) {
+            throw new Exception("Correo requerido");
         }
 
+        if (estudiante.getContrasena() == null || estudiante.getContrasena().isEmpty()) {
+            throw new Exception("Contraseña requerida");
+        }
+        
+        boolean coincide = BCrypt.checkpw(
+            contrasena,          
+            estudiante.getContrasena()    
+        );
+
+        if (!coincide) {
+            throw new Exception("Contraseña incorrecta");
+        }
+
+        
+        if (!estudiante.isActivo()) {
+            throw new Exception("Usuario inactivo");
+        }
+
+        
         return estudiante;
     }
     
+    @Override
     public Estudiante registrarEstudiante(Estudiante estudiante) throws Exception {
         if (estudiante.getNombre() == null || estudiante.getNombre().trim().isEmpty()) {
             throw new Exception("El nombre es obligatorio.");
         }
-        if (estudiante.getApellidos() == null || estudiante.getApellidos().trim().isEmpty()) {
-            throw new Exception("Los apellidos son obligatorios.");
-        }
         if (estudiante.getCorreo() == null || estudiante.getCorreo().trim().isEmpty()) {
             throw new Exception("El correo es obligatorio.");
         }
-        if (estudiante.getContrasena() == null || estudiante.getContrasena().trim().isEmpty()) {
-            throw new Exception("La contraseña es obligatoria.");
-        }
+        
         if (estudianteDAO.existeCorreo(estudiante.getCorreo())) {
             throw new Exception("El correo ingresado ya está registrado.");
+        }
+        
+        //Encriptar contraseña
+        if (!estudiante.getContrasena().startsWith("$2a$")) {
+            String hash = BCrypt.hashpw(estudiante.getContrasena(), BCrypt.gensalt());
+            estudiante.setContrasena(hash);
         }
 
         return estudianteDAO.guardar(estudiante);
     }
-
-    public List<Estudiante> listarPendientesDeEvaluar(Long idEmisor) {
-        return estudianteDAO.listarPendientesDeEvaluar(idEmisor);
+    
+    //AGREGUE ACTUALIZAR -- kamila 
+    @Override
+    public Estudiante actualizarEstudiante(Estudiante estudiante) throws Exception {
+    if (estudiante.getNombre() == null || estudiante.getNombre().trim().isEmpty()) {
+        throw new Exception("El nombre es obligatorio.");
     }
-
-    public Optional<Estudiante> buscarPorId(Long id) {
-        return estudianteDAO.buscarPorId(id);
+    if (estudiante.getCorreo() == null || estudiante.getCorreo().trim().isEmpty()) {
+        throw new Exception("El correo es obligatorio.");
     }
-
-    public List<Match> listarMatchesDeEstudiante(Long idEstudiante) {
-        return matchDAO.listarMatchesDeEstudiante(idEstudiante);
+    return estudianteDAO.actualizar(estudiante);
     }
 }

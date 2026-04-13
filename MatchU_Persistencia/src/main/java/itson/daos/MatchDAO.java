@@ -48,20 +48,39 @@ public class MatchDAO implements IMatchDAO{
 
     @Override
     public List<Match> listarMatchesDeEstudiante(Long idEstudiante) {
-        EntityManager em = JPAUtil.getEntityManager();
-        try {
-            return em.createQuery(
-                "SELECT m FROM Match m WHERE m.activo = true AND (" +
-                "  m.estudiante1.idEstudiante = :id OR m.estudiante2.idEstudiante = :id) " +
-                "ORDER BY m.fechaMatch DESC",
-                Match.class
-            ).setParameter("id", idEstudiante)
-             .setMaxResults(100)
-             .getResultList();
-        } finally {
-            em.close();
-        }
+    EntityManager em = JPAUtil.getEntityManager();
+    try {
+        return em.createQuery(
+            "SELECT m FROM Match m " +
+            "JOIN FETCH m.estudiante1 " + 
+            "JOIN FETCH m.estudiante2 " +  
+            "WHERE m.activo = true AND (" +
+            "  m.estudiante1.idEstudiante = :id OR " +
+            "  m.estudiante2.idEstudiante = :id) " +
+            "ORDER BY m.fechaMatch DESC",
+            Match.class
+        ).setParameter("id", idEstudiante)
+         .setMaxResults(100)
+         .getResultList();
+    } finally {
+        em.close();
     }
+}
+//    public List<Match> listarMatchesDeEstudiante(Long idEstudiante) {
+//        EntityManager em = JPAUtil.getEntityManager();
+//        try {
+//            return em.createQuery(
+//                "SELECT m FROM Match m WHERE m.activo = true AND (" +
+//                "  m.estudiante1.idEstudiante = :id OR m.estudiante2.idEstudiante = :id) " +
+//                "ORDER BY m.fechaMatch DESC",
+//                Match.class
+//            ).setParameter("id", idEstudiante)
+//             .setMaxResults(100)
+//             .getResultList();
+//        } finally {
+//            em.close();
+//        }
+//    }
 
     @Override
     public Optional<Match> buscarPorId(Long idMatch) {
