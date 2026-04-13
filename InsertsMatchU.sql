@@ -14,7 +14,7 @@ INSERT INTO hobbies (nombre, categoria) VALUES
 
 -- ============================================
 -- INSERTS: estudiantes
--- contraseña = 123456 
+-- contraseña = 1234 
 -- ============================================
 
 INSERT INTO estudiantes 
