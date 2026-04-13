@@ -7,12 +7,13 @@ import itson.matchu_dominio.models.Estudiante;
 import itson.matchu_dominio.models.Interaccion;
 import itson.matchu_dominio.models.Match;
 import java.util.Optional;
+import itson.interfacesBO.IInteraccionService;
 
 /**
  *
  * @author Ricardo
  */
-public class InteraccionService {
+public class InteraccionService implements IInteraccionService{
     
     private final InteraccionDAO interaccionDAO;
     private final MatchDAO matchDAO;
@@ -24,6 +25,7 @@ public class InteraccionService {
         this.estudianteDAO = new EstudianteDAO();
     }
 
+    @Override
     public void registrarLike(Long idEmisor, Long idReceptor) throws Exception {
         if (idEmisor.equals(idReceptor)) {
             throw new Exception("No puedes darte 'Me gusta' a ti mismo.");

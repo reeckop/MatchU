@@ -9,7 +9,7 @@ import java.util.Optional;
  * @author jalt2
  */
 public interface IEstudianteDAO {
-    Estudiante guardar(String nombre,String apellidos,String correo,String carrera,Integer semestre,String intereses,String password);
+    Estudiante guardar(Estudiante estudiante);
     Optional<Estudiante> buscarPorId(Long id);
     Optional<Estudiante> buscarPorCorreo(String correo);
     List<Estudiante> listarTodosExcepto(Long idExcluido);

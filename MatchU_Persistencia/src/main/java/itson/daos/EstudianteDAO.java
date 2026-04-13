@@ -16,19 +16,9 @@ import java.util.Optional;
 public class EstudianteDAO implements IEstudianteDAO{
     
     @Override
-    public Estudiante guardar(String nombre,String apellidos,String correo,String carrera,Integer semestre,String intereses,String password) {
+    public Estudiante guardar(Estudiante estudiante) {
         EntityManager em = JPAUtil.getEntityManager();
         try {
-            Estudiante estudiante = new Estudiante();
-        
-            estudiante.setNombre(nombre);
-            estudiante.setApellidos(apellidos);
-            estudiante.setCorreo(correo);
-            estudiante.setCarrera(carrera);
-            estudiante.setSemestre(semestre);
-            estudiante.setIntereses(intereses);
-            estudiante.setContrasena(password);
-            
             em.getTransaction().begin();
             em.persist(estudiante);
             em.getTransaction().commit();

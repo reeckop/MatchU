@@ -5,7 +5,6 @@ import itson.daos.MensajeDAO;
 import itson.matchu_dominio.models.Match;
 import itson.matchu_dominio.models.Mensaje;
 import itson.matchu_dominio.models.Estudiante;
-import java.util.List;
 import java.util.Optional;
 
 /**
@@ -41,16 +40,5 @@ public class MensajeService {
 
         Mensaje mensaje = new Mensaje(match, remitente, contenido);
         return mensajeDAO.guardar(mensaje);
-    }
-     public List<Mensaje> listarPorMatch(Long idMatch) {
-        return mensajeDAO.listarPorMatch(idMatch);
-    }
-
-    public void marcarComoLeidos(Long idMatch, Long idDestinatario) {
-        mensajeDAO.marcarComoLeidos(idMatch, idDestinatario);
-    }
-
-    public long contarNoLeidos(Long idMatch, Long idDestinatario) {
-        return mensajeDAO.contarNoLeidos(idMatch, idDestinatario);
     }
 }
